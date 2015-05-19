@@ -238,27 +238,32 @@ if __name__ == '__main__':
         if args.p:
             c = canvas.Canvas(args.p)
             pdfText = text.split()
-            print str(len(pdfText))
             x = 700
+            textToDrawArray = []
             for i in range(0, len(pdfText)):
-                if i+1 % 5 == 0:
-                    if i - 6 < len(pdfText):
-                        textToDraw = pdfText[i] + " " + pdfText[i+1] + " " + pdfText[i+2] + " " + pdfText[i+3] + " " + pdfText[i+4] + " " + pdfText[i+5] + " "
-                        c.drawString(100, x, textToDraw)
-                        if i == 9:
+                if i - 5 < len(pdfText):
+                    if i % 10 == 0 and i < len(pdfText) - 10:
+                        print i
+                        textToDraw = pdfText[i] + " " + pdfText[i+1] + " " + pdfText[i+2] + " " + pdfText[i+3] + " " + pdfText[i+4] + " " + pdfText[i+5] + " " + pdfText[i+6] + " " + pdfText[i+7] + " " + pdfText[i+8] + " " + pdfText[i+9] + " "
+                        textToDrawArray.append(textToDraw)
+                        #c.drawString(100, x, textToDraw)
+                        if i == 10:
+                            textToDrawArray = textToDrawArray[::-1]
+                            for i in range(0, len(textToDrawArray)):
+                                c.drawString(100, x, textToDrawArray[i])
+                                x += 10
                             c.save()
-                            return
-                        x += 30
+                            print "pdf created"
             #c.drawString(100,750,text)
-            c.save()
+            #c.save()
         if args.pt:
             c = canvas.Canvas(args.pt)
             c.drawString(100,750,"Welcome to Reportlab!")
             c.save()
-        else:
-            fo = open("notes.txt", "a")
-            fo.write(text + "\nEnd of Slide\n\n");
-            fo.close()
+        #else:
+        #    fo = open("notes.txt", "a")
+        #    fo.write(text + "\nEnd of Slide\n\n");
+        #    fo.close()
         
         print "\nI think your notes say:\n\n"
         print(text)
