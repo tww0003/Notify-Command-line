@@ -12,6 +12,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", metavar='\'image file\'', help="Enter the name of your notes image, and convert it into a text file")
     parser.add_argument("-t", metavar='\'text output\'', help='Output a text file with a name of your choice. The default name is notes.')
+    parser.add_argument("-pt", metavar='\'pdf output\'', help='WARNING: UNDER DEVELOPMENT Output a pdf file with the note images and text')
+    parser.add_argument("-p", metavar='\'pdf output\'', help='WARNING: UNDER DEVELOPMENT Output a pdf file')
+
     args = parser.parse_args()
     
     
@@ -232,6 +235,26 @@ if __name__ == '__main__':
             fo = open(args.t, "a")
             fo.write(text + "\nEnd of Slide\n\n")
             fo.close()
+        if args.p:
+            c = canvas.Canvas(args.p)
+            pdfText = text.split()
+            print str(len(pdfText))
+            x = 700
+            for i in range(0, len(pdfText)):
+                if i+1 % 5 == 0:
+                    if i - 6 < len(pdfText):
+                        textToDraw = pdfText[i] + " " + pdfText[i+1] + " " + pdfText[i+2] + " " + pdfText[i+3] + " " + pdfText[i+4] + " " + pdfText[i+5] + " "
+                        c.drawString(100, x, textToDraw)
+                        if i == 9:
+                            c.save()
+                            return
+                        x += 30
+            #c.drawString(100,750,text)
+            c.save()
+        if args.pt:
+            c = canvas.Canvas(args.pt)
+            c.drawString(100,750,"Welcome to Reportlab!")
+            c.save()
         else:
             fo = open("notes.txt", "a")
             fo.write(text + "\nEnd of Slide\n\n");
