@@ -229,7 +229,6 @@ if __name__ == '__main__':
         
         text_im = orig_im.crop(crop)
         text_im.save("cropped.png")
-       # text_im.ConvertToMono(255, 255, 255)
         text = image_to_string(text_im)
         if args.t:
             fo = open(args.t, "a")
@@ -241,21 +240,32 @@ if __name__ == '__main__':
             x = 700
             textToDrawArray = []
             for i in range(0, len(pdfText)):
-                if i - 5 < len(pdfText):
+                if i - 10 < len(pdfText):
                     if i % 10 == 0 and i < len(pdfText) - 10:
-                        print i
                         textToDraw = pdfText[i] + " " + pdfText[i+1] + " " + pdfText[i+2] + " " + pdfText[i+3] + " " + pdfText[i+4] + " " + pdfText[i+5] + " " + pdfText[i+6] + " " + pdfText[i+7] + " " + pdfText[i+8] + " " + pdfText[i+9] + " "
                         textToDrawArray.append(textToDraw)
-                        #c.drawString(100, x, textToDraw)
-                        if i == 10:
-                            textToDrawArray = textToDrawArray[::-1]
-                            for i in range(0, len(textToDrawArray)):
-                                c.drawString(100, x, textToDrawArray[i])
-                                x += 10
-                            c.save()
-                            print "pdf created"
-            #c.drawString(100,750,text)
-            #c.save()
+                    if i == len(pdfText) - 10:
+                        if(len(textToDrawArray) < len(pdfText)):
+                            words_left = len(pdfText) - (len(textToDrawArray) * 10)
+                            
+                            text2 = " "
+                            for i in range(0, words_left):
+                                text2 += pdfText[(len(textToDrawArray) * 10) + i] +  " "
+                            
+                        
+                        textToDrawArray = textToDrawArray[::-1]
+                        
+                        for i in range(0, len(textToDrawArray)):
+                            c.drawString(100, x, textToDrawArray[i])
+                            x += 12
+                        x = x - (len(textToDrawArray) * 12) - 12
+                        text2 = text2.lstrip()
+                        c.drawString(100, x, text2)
+                        #for i in range(0, len(text3)):
+                        #    c.drawString(100, x, text3[i])
+                        #    x += 12
+                        c.save()
+                        print "pdf created"
         if args.pt:
             c = canvas.Canvas(args.pt)
             c.drawString(100,750,"Welcome to Reportlab!")
